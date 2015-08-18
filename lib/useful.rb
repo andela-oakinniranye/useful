@@ -1,6 +1,8 @@
 require 'useful/version'
 require 'active_support/all'
 require 'pathname'
+require 'faraday'
+require 'ostruct'
 
 module Useful
   # Your code goes here...
