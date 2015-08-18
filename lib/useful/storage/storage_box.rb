@@ -18,6 +18,8 @@ module Useful
     FILES_URL = "#{API_URL}/files"
     UPLOAD_URL = "https://upload.box.com/api/#{API_VERSION}"
     FILES_UPLOAD_URL = "#{UPLOAD_URL}/files/content"
+    # CLIENT = self.connect
+    # UPLOAD_CLIENT = self.connect_for_upload
     CLASS_NAME = "BOX"
 
     @@files = {}
@@ -35,7 +37,8 @@ module Useful
     end
 
     def self.set_header(connection)
-      connection.headers = { 'Authorization' => "Bearer #{ENV['BOX_ACCESS_TOKEN']}" }
+      connection.headers['Authorization']= "Bearer #{ENV['BOX_ACCESS_TOKEN']}"
+      binding.pry;
       connection
     end
 
@@ -73,8 +76,12 @@ module Useful
       # JSON.parse(response.body)
     end
 
-    def add_file(file_location, folder_id)
-      response = self.class.connect_for_upload.post
+    def add_file(file, folder_id)
+      # payload = {name: file.name, parent: {id: file.parent }, file: Faraday::UploadIO.new(file.location, file.type)}
+      # response = self.class.connect_for_upload.put(FILES_UPLOAD_URL, payload)
+      response = self.class.connect_for_upload.post do ||
+        
+      end
     end
 
     def self.fetch_all
