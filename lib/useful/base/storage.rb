@@ -2,13 +2,17 @@ module Useful
   module Base
     class Storage
       attr_reader :uploads, :downloads
+      @@files = []
 
       def save
-
+        @@files.each{|file|
+          # upload
+        }
       end
 
       def add_file(file)
-
+        @@files << file if file.is_a? UsefulFile
+        self
       end
 
       def download_file(file_id)
@@ -23,14 +27,12 @@ module Useful
 
       end
 
-      def delete
+      def delete(id)
 
       end
 
-      class << self
-        def fetch_all
+      def self.fetch_all
 
-        end
       end
     end
   end

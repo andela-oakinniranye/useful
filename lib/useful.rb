@@ -2,12 +2,13 @@ require 'useful/version'
 require 'active_support/all'
 require 'pathname'
 require 'faraday'
-require 'ostruct'
+require 'hashie'
+require 'oj'
 
 module Useful
   # Your code goes here...
   # attr_reader :event, :built_event
-  extend ActiveSupport::Concern
+  # extend ActiveSupport::Concern
 
 end
 

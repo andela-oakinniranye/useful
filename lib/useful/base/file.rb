@@ -5,8 +5,9 @@ module Useful
     @parent = '0'
     @@files = []
 
-    def initialize(file = {})
-      set_attr OpenStruct.new(file) if file.is_a? Hash
+    def initialize(file_s = {})
+      set_attr Hashie::Mash.new(file_s) if file_s.is_a? Hash
+      # file_s.each{ |file| } if file_s.is_a? Array
       @@files << self
     end
 

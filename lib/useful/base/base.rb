@@ -23,7 +23,11 @@ module Useful
     end
 
     def upload_client(access_token=ENV["#{self::CLASS_NAME}_ACCESS_TOKEN"])
-      @@upload_connection ||= Faraday.new(url: self::UPLOAD_URL)
+      @@upload_connection ||= Faraday.new(url: self::UPLOAD_URL) do |conn|
+        conn.request :multipart
+        conn.request :url_encoded
+        conn.adapter :net_http
+      end
       raise ArgumentError, "You need to set ENV['#{self::CLASS_NAME}_ACCESS_TOKEN'] with your access_token from Box \n Register at https://www.box.com/developers/services" unless access_token
       @@upload_connection
     end

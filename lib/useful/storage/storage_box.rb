@@ -22,7 +22,6 @@ module Useful
     # UPLOAD_CLIENT = self.connect_for_upload
     CLASS_NAME = "BOX"
 
-    @@files = {}
 
 
 
@@ -38,7 +37,7 @@ module Useful
 
     def self.set_header(connection)
       connection.headers['Authorization']= "Bearer #{ENV['BOX_ACCESS_TOKEN']}"
-      binding.pry;
+      # binding.pry;
       connection
     end
 
@@ -47,13 +46,9 @@ module Useful
     end
 
     def self.connect_for_upload
-      set_header(client)
+      set_header(upload_client)
     end
 
-
-    def add_file
-
-    end
 
     def save
       #code
@@ -62,31 +57,26 @@ module Useful
 
 
     def fetch(file: nil, folder: nil )
-      binding.pry
       if folder
         folder_url = FOLDER_URL + '/' + folder
         response = self.class.connect.get(folder_url)
-
       elsif file
         file_url = FILES_URL + '/' + file
         response = self.class.connect.get(file_url)
-      # else
-
       end
-      # JSON.parse(response.body)
+      JSON.parse(response.body)
     end
 
-    def add_file(file, folder_id)
-      # payload = {name: file.name, parent: {id: file.parent }, file: Faraday::UploadIO.new(file.location, file.type)}
-      # response = self.class.connect_for_upload.put(FILES_UPLOAD_URL, payload)
-      response = self.class.connect_for_upload.post do ||
-        
-      end
+    def add_file(file)
+      attributes = {name: file.name, parent: {id: file.parent}}
+      body = {attributes: attributes.to_json , file: Faraday::UploadIO.new(file.location, file.type)}
+      binding.pry
+      response = StorageBox.connect_for_upload.post(FILES_UPLOAD_URL, body)
+      JSON.parse(response.body)
     end
 
     def self.fetch_all
-      connection = client(FOLDER_URL, access_token: ENV['BOX_ACCESS_TOKEN'])
-      response = connection.get('0')
+      response = connect.get(FOLDER_URL + '/0')
       JSON.parse(response.body)
     end
   end
